@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,6 +13,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -76,10 +79,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .position(model.getLatLng())
                     .title(model.getTitle())
                     .icon(BitmapDescriptorFactory.fromBitmap(model.getBitmap())));
-        }
 
+
+        }
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Toast.makeText(MapsActivity.this, marker.getTitle(), Toast.LENGTH_SHORT).show();
+                Log.d("OnMarkerClickListener", marker.getId());
+                return false;
+            }
+        });
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentPosition));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(6));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
 
     }
 }
